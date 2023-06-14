@@ -1,0 +1,35 @@
+1.kubectl get node
+
+2.kubectl get pods -n kube-system
+
+3.kubectl get pods
+
+4.kubectl apply -f deployment.yaml
+
+5.kubectl get describe pods pods-name
+
+6.kubectl get svc
+
+7.kubectl get hpa
+
+8.kubectl get replica
+
+9.kubectl delete pods pods-name
+
+10.kubectl rollout restart deployment deploy-name
+
+11.kubectl create ns
+
+12.kubectl get ns
+
+13.kubectl apply -f deployment.yaml
+
+14.kubectl get pods -n ns-name
+
+15.helm create app
+
+16.helm install app .
+
+17.helm uninstall app
+
+18.helm list
