@@ -1,0 +1,45 @@
+#create the master and slave node with minimum 2 gib ram
+
+#slave node's
+
+vi /etc/ssh/sshd_config
+
+PasswordAuthentication yes
+
+passwd ubuntu
+
+**master node **
+
+ssh-keygen
+ssh-copy-id ubuntu@(slave-ip)
+
+#master and slave 
+
+apt-get update 
+ 
+apt-get install -y docker.io
+  
+apt-get update && apt-get install -y apt-transport-https curl
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+cat << EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+sudo apt-get update && sudo apt-get install -y kubelet=1.20.0-00 kubeadm=1.20.0-00 kubectl=1.20.0-00 docker.io
+
+#master
+
+sudo kubeadm init
+export KUBECONFIG=/etc/kubernetes/admin.conf
+
+kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
+
+#slave 
+
+kubeadm join 172.31.42.117:6443 --token vpo53h.es9tjl7wjl2yhjaf \
+    --discovery-token-ca-cert-hash sha256:d42e0caedeffa77d82fa0bf3d9a3ab3f5595d832d7284020f78cf67b74c7c69b
+    
+    
+
