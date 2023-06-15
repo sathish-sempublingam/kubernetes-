@@ -1,18 +1,26 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: test-local-vol
-  labels:
-    name: test-local-vol
+  name: redis
 spec:
-  containers:
-  - name: app
-    image: busybox
-    command: ['sh', '-c', 'echo "The local volume is mounted!" > /mnt/test.txt && sleep 3600']
-    volumeMounts:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: arunmagi/html
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: local-persistent-storage
+          mountPath: "/data"
+      volumes:
       - name: local-persistent-storage
-        mountPath: /mnt
-  volumes:
-    - name: local-persistent-storage
-      persistentVolumeClaim:
-        claimName: test-pvc
+        persistentVolumeClaim:
+          claimName: test-pvc
